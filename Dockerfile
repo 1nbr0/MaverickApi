@@ -47,14 +47,13 @@ RUN apk add --no-cache \
 
 RUN set -eux; \
     install-php-extensions \
-    	intl \
-    	zip \
-    	apcu \
-		opcache \
+        intl \
+        zip \
+        apcu \
+        opcache \
+        pdo_mysql \
+        mysqli \
     ;
-
-###> recipes ###
-###< recipes ###
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/

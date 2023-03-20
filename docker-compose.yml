@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.7"
 
 services:
   php:
@@ -18,7 +18,7 @@ services:
       start_period: 30s
     environment:
       # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-14}&charset=${POSTGRES_CHARSET:-utf8}
+      DATABASE_URL: mysql://root:root@db:3306/maverick?serverVersion=3.0.32&charset=utf8mb4
       # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
@@ -57,9 +57,29 @@ services:
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
 
+###> doctrine/doctrine-bundle ###
+  db:
+    image: mysql:8.0.32
+    restart: always
+    volumes:
+      - db_app:/var/lib/mysql
+    environment:
+      MYSQL_VERSION: 8.0.32
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: maverick
+      MYSQL_USER: maverick-u
+      MYSQL_PASSWORD: maverick-pwd
+    ports:
+      - 3306:3306
+###< doctrine/doctrine-bundle ###
+
 volumes:
   php_socket:
   caddy_data:
   caddy_config:
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  db_app:
+###< doctrine/doctrine-bundle ###
