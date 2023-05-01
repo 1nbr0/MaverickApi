@@ -37,14 +37,12 @@ WORKDIR /srv/app
 COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/
 
 # persistent / runtime deps
-RUN apk update && apk add --no-cache \
+RUN apk update && RUN apk add --no-cache \
 		acl \
 		fcgi \
 		file \
 		gettext \
 		git \
-		nodejs \
-		npm \
 	;
 
 RUN set -eux; \
@@ -84,4 +82,46 @@ COPY --from=composer --link /composer /usr/bin/composer
 # prevent the reinstallation of vendors at every changes in the source code
 COPY --link composer.* symfony.* ./
 RUN set -eux; \
-    if [ -f composer.json ]; then
+    if [ -f composer.json ]; then \
+		composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress; \
+		composer clear-cache; \
+    fi
+
+# copy sources
+COPY --link  . ./
+RUN rm -Rf docker/
+
+RUN set -eux; \
+	mkdir -p var/cache var/log; \
+    if [ -f composer.json ]; then \
+		composer dump-autoload --classmap-authoritative --no-dev; \
+		composer dump-env prod; \
+		composer run-script --no-dev post-install-cmd; \
+		chmod +x bin/console; sync; \
+    fi
+
+# Dev image
+FROM app_php AS app_php_dev
+
+ENV APP_ENV=dev XDEBUG_MODE=off
+VOLUME /srv/app/var/
+
+RUN rm "$PHP_INI_DIR/conf.d/app.prod.ini"; \
+	mv "$PHP_INI_DIR/php.ini" "$PHP_INI_DIR/php.ini-production"; \
+	mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+COPY --link docker/php/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
+
+RUN set -eux; \
+	install-php-extensions xdebug
+
+RUN rm -f .env.local.php
+
+# Caddy image
+FROM caddy:2.6-alpine AS app_caddy
+
+WORKDIR /srv/app
+
+COPY --from=app_caddy_builder --link /usr/bin/caddy /usr/bin/caddy
+COPY --from=app_php --link /srv/app/public public/
+COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
