@@ -6,23 +6,48 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\WarplaneRepository;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: WarplaneRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new Get(
+            normalizationContext: ['groups' => ['warplane:read', 'warplane:item:get']]
+        ),
         new GetCollection(),
         new Post(),
         new Put(),
         new Delete(),
-    ]
+    ],
+    normalizationContext: [
+        'groups' => ['warplane:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['warplane:write']
+    ],
+    paginationItemsPerPage: 20
+)]
+#[ApiResource(
+    uriTemplate: '/users/{user_id}/warplanes.{_format}',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'warplanes',
+            fromClass: User::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => ['warplane:read']
+    ],
 )]
 class Warplane
 {
@@ -32,23 +57,32 @@ class Warplane
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
+    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
     private Collection $flightSchedules;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'warplanes')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['warplane:read', 'warplane:write'])]
+    private ?User $owner = null;
+
     public function __construct()
     {
         $this->flightSchedules = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -115,6 +149,15 @@ class Warplane
         return $this->createdAt;
     }
 
+    /**
+     * A human-readable representation of when this treasure was plundered.
+     */
+    #[Groups(['warplane:read', 'user:read'])]
+    public function getCreatedAtAgo(): string
+    {
+        return Carbon::instance($this->createdAt)->diffForHumans();
+    }
+
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -130,6 +173,18 @@ class Warplane
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

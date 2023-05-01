@@ -3,13 +3,39 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+    paginationItemsPerPage: 20,
+)]
+#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
+#[UniqueEntity(fields: ['username'], message: 'Il existe déjà un compte avec ce nom d\'utilisateur')]
+#[ApiResource(
+    uriTemplate: '/warplanes/{warplane_id}/owner.{_format}',
+    operations: [new Get()],
+    uriVariables: [
+        'warplane_id' => new Link(
+            fromProperty: 'owner',
+            fromClass: Warplane::class,
+        )
+    ],
+    normalizationContext: [
+        'groups' => ['user:read']
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -18,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -27,10 +56,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['user:read', 'user:write', 'warplane:item:get'])]
+    #[Assert\NotBlank]
     private ?string $username = null;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Warplane::class)]
+    #[Groups(['user:read'])]
+    private Collection $warplanes;
+
+    public function __construct()
+    {
+        $this->warplanes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -110,6 +151,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Warplane>
+     */
+    public function getWarplanes(): Collection
+    {
+        return $this->warplanes;
+    }
+
+    public function addWarplane(Warplane $warplane): self
+    {
+        if (!$this->warplanes->contains($warplane)) {
+            $this->warplanes->add($warplane);
+            $warplane->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarplane(Warplane $warplane): self
+    {
+        if ($this->warplanes->removeElement($warplane)) {
+            // set the owning side to null (unless already changed)
+            if ($warplane->getOwner() === $this) {
+                $warplane->setOwner(null);
+            }
+        }
 
         return $this;
     }
