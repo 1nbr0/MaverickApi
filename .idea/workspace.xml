@@ -5,10 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8867223-3f70-4756-a218-6ad8cb979310" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/76eacaf2-840e-4527-a301-5af5c5dc5dfc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/76eacaf2-840e-4527-a301-5af5c5dc5dfc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Airport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Airport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Track.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Track.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Warplane.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Warplane.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +112,11 @@
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/webonyx/graphql-php" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
     </include_path>
   </component>
   <component name="ProjectId" id="2MV9kq8alG7ZiMcRWfX1SPJW2OJ" />
@@ -124,7 +137,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -170,11 +183,21 @@
       <workItem from="1677842029906" duration="12925000" />
       <workItem from="1678833418554" duration="3059000" />
       <workItem from="1681226517886" duration="3358000" />
-      <workItem from="1681281019992" duration="2811000" />
+      <workItem from="1681281019992" duration="2850000" />
+      <workItem from="1681397160012" duration="642000" />
+      <workItem from="1681459010320" duration="3345000" />
+      <workItem from="1681931813251" duration="2520000" />
+      <workItem from="1682364363726" duration="3032000" />
+      <workItem from="1682423762287" duration="392000" />
+      <workItem from="1682508379783" duration="2745000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

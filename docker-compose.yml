@@ -18,7 +18,7 @@ services:
       start_period: 30s
     environment:
       # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      DATABASE_URL: mysql://root:root@db:3306/maverick?serverVersion=3.0.32&charset=utf8mb4
+      DATABASE_URL: mysql://uvhqneryi2oobo4b:rF6sOopGsB2kjo9vqMbr@bf37phsdb3gyqlo9idip-mysql.services.clever-cloud.com:3306/bf37phsdb3gyqlo9idip?serverVersion=8.0&charset=utf8mb4
       # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
