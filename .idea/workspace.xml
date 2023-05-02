@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8867223-3f70-4756-a218-6ad8cb979310" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/warplane.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/css/templatemo-breezed.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/templatemo-breezed.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home_page/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home_page/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +218,10 @@
       <workItem from="1682983868857" duration="936000" />
       <workItem from="1682984822322" duration="52000" />
       <workItem from="1682984960865" duration="84000" />
-      <workItem from="1682986262026" duration="59000" />
+      <workItem from="1682986262026" duration="78000" />
+      <workItem from="1683017397170" duration="1726000" />
+      <workItem from="1683035782572" duration="2124000" />
+      <workItem from="1683066457491" duration="1095000" />
     </task>
     <servers />
   </component>
