@@ -328,6 +328,23 @@ a.text-button-icon:hover i {
     margin-bottom: 0px;
 }
 
+.blur-container {
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    backdrop-filter: blur(15px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.blur-container .buttons-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
 
 /*
 ---------------------------------------------

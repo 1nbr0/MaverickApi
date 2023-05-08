@@ -3,8 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +22,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new Patch(
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_USER")'
+        ),
+    ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
     paginationItemsPerPage: 20,
@@ -35,6 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: [
         'groups' => ['user:read']
     ],
+    security: 'is_granted("ROLE_USER")'
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -50,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Groups(['user:write', 'user:read'])]
     private array $roles = [];
 
     /**

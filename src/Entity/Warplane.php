@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\WarplaneRepository;
@@ -21,12 +22,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['warplane:read', 'warplane:item:get']]
+            normalizationContext: ['groups' => ['warplane:read', 'warplane:item:get']],
+            security: 'is_granted("ROLE_USER")'
         ),
-        new GetCollection(),
-        new Post(),
-        new Put(),
-        new Delete(),
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("ROLE_USER")'),
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object.getOwner() == user)',
+            securityPostDenormalize: 'object.getOwner() == user'
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object.getOwner() == user)',
+            securityPostDenormalize: 'object.getOwner() == user'
+        ),
     ],
     normalizationContext: [
         'groups' => ['warplane:read']
@@ -48,6 +56,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [
         'groups' => ['warplane:read']
     ],
+    security: 'is_granted("ROLE_USER")'
 )]
 class Warplane
 {
