@@ -63,6 +63,7 @@ class Warplane
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['warplane:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -92,6 +93,7 @@ class Warplane
     {
         $this->flightSchedules = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int
