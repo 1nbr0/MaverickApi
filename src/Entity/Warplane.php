@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -9,31 +10,36 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
+use ApiPlatform\OpenApi\Model;
+use App\Controller\CreateMediaObjectAction;
 use App\Repository\WarplaneRepository;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WarplaneRepository::class)]
+#[Vich\Uploadable]
 #[ApiResource(
     operations: [
         new Get(
-            normalizationContext: ['groups' => ['warplane:read', 'warplane:item:get']],
+            normalizationContext: ['groups' => ['warplane:item:read', 'warplane:item:get']],
             security: 'is_granted("ROLE_USER")'
         ),
         new GetCollection(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")'),
+        new Post(inputFormats: ['multipart' => ['multipart/form-data']], security: 'is_granted("ROLE_USER")'),
         new Patch(
-            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object.getOwner() == user)',
-            securityPostDenormalize: 'object.getOwner() == user'
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user',
         ),
         new Delete(
-            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object.getOwner() == user)',
-            securityPostDenormalize: 'object.getOwner() == user'
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user'
         ),
     ],
     normalizationContext: [
@@ -54,7 +60,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         )
     ],
     normalizationContext: [
-        'groups' => ['warplane:read']
+        'groups' => ['warplane:collection:read']
     ],
     security: 'is_granted("ROLE_USER")'
 )]
@@ -63,19 +69,19 @@ class Warplane
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['warplane:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
-    #[Groups(['warplane:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
     private Collection $flightSchedules;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -84,9 +90,21 @@ class Warplane
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['warplane:read', 'warplane:collection:read'])]
+    #[ApiProperty(types: ['https://schema.org/contentUrl'])]
+    public ?string $contentUrl = null;
+
+    #[Vich\UploadableField(mapping: "warplane_image", fileNameProperty: "filePath")]
+    #[Groups(['warplane:write'])]
+    public ?File $file = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $filePath = null;
+
     #[ORM\ManyToOne(inversedBy: 'warplanes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['warplane:read', 'warplane:write'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write'])]
     private ?User $owner = null;
 
     public function __construct()
@@ -198,5 +216,21 @@ class Warplane
         $this->owner = $owner;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContentUrl(): ?string
+    {
+        return $this->contentUrl;
+    }
+
+    /**
+     * @param string|null $contentUrl
+     */
+    public function setContentUrl(?string $contentUrl): void
+    {
+        $this->contentUrl = $contentUrl;
     }
 }
