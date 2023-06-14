@@ -10,8 +10,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\OpenApi\Model;
-use App\Controller\CreateMediaObjectAction;
 use App\Repository\WarplaneRepository;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WarplaneRepository::class)]
 #[Vich\Uploadable]
@@ -34,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Post(inputFormats: ['multipart' => ['multipart/form-data']], security: 'is_granted("ROLE_USER")'),
         new Patch(
+            denormalizationContext: ['groups' => ['warplane:items:write']],
             security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
 //            securityPostDenormalize: 'object.getOwner() == user',
         ),
@@ -73,15 +71,15 @@ class Warplane
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write'])]
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get'])]
     private Collection $flightSchedules;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -91,12 +89,12 @@ class Warplane
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['warplane:read', 'warplane:collection:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:item:get'])]
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     public ?string $contentUrl = null;
 
     #[Vich\UploadableField(mapping: "warplane_image", fileNameProperty: "filePath")]
-    #[Groups(['warplane:write'])]
+    #[Groups(['warplane:write', 'warplane:item:read'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
@@ -104,7 +102,7 @@ class Warplane
 
     #[ORM\ManyToOne(inversedBy: 'warplanes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'warplane:items:write'])]
     private ?User $owner = null;
 
     public function __construct()

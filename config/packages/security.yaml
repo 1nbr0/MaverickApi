@@ -27,7 +27,11 @@ security:
             provider: jwt
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh
+                provider: app_user_provider
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -46,6 +50,7 @@ security:
     access_control:
         - { path: ^/api/register, roles: PUBLIC_ACCESS  }
         - { path: ^/api/login, roles: PUBLIC_ACCESS  }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
 #        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
