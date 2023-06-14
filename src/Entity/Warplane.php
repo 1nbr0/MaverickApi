@@ -46,7 +46,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     denormalizationContext: [
         'groups' => ['warplane:write']
     ],
-    paginationItemsPerPage: 20
+    paginationItemsPerPage: 3
 )]
 #[ApiResource(
     uriTemplate: '/users/{user_id}/warplanes.{_format}',
@@ -60,6 +60,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     normalizationContext: [
         'groups' => ['warplane:collection:read']
     ],
+    paginationItemsPerPage: 6,
     security: 'is_granted("ROLE_USER")'
 )]
 class Warplane
