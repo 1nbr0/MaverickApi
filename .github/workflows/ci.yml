@@ -13,6 +13,9 @@ jobs:
             uses: actions/checkout@v3
           - name: Lint Dockerfile
             uses: hadolint/hadolint-action@v3.1.0
+            with:
+                dockerfile: Dockerfile
+                ignore: DL3007,DL3018 # Ignore using latest on mlocati/php-extension-installer & version in apk add
     build:
         name: Docker build
         runs-on: ubuntu-latest
