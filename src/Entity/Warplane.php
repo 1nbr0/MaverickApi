@@ -80,7 +80,7 @@ class Warplane
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'user:read', 'warplane:item:read', 'warplane:item:get'])]
     private Collection $flightSchedules;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

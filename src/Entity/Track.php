@@ -14,15 +14,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TrackRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(security: 'is_granted("ROLE_USER")'),
-        new GetCollection(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_ADMIN")'),
-        new Patch(security: 'is_granted("ROLE_ADMIN")'),
-        new Delete(security: 'is_granted("ROLE_ADMIN")'),
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new Post(security: 'is_granted("ROLE_USER")'),
+        new Patch(
+            denormalizationContext: ['groups' => ['track:items:write']],
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user',
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user'
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['track:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['track:write']
     ],
     paginationItemsPerPage: 20,
 )]
@@ -31,36 +46,38 @@ class Track
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['track:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['track:read', 'track:write'])]
     private ?int $idTrackNumber = null;
 
-    #[ORM\Column(name: 'track_name_qfu',length: 50)]
-    private ?string $name = null;
+    #[ORM\Column(length: 50)]
+    #[Groups(['track:read', 'track:write'])]
+    private ?string $trackNameQfu = null;
 
     #[ORM\ManyToOne(inversedBy: 'numTrack')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['track:read', 'track:write'])]
     private ?Airport $airport = null;
 
-    #[ORM\ManyToOne(inversedBy: 'departureTrack')]
+    #[ORM\OneToMany(mappedBy: 'departureTrack', targetEntity: FlightSchedule::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FlightSchedule $flightScheduleDeparture = null;
+    #[Groups(['track:read'])]
+    private Collection $flightScheduleDeparture;
 
-    #[ORM\ManyToOne(inversedBy: 'arrivalTrack')]
+    #[ORM\OneToMany(mappedBy: 'arrivalTrack', targetEntity: FlightSchedule::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FlightSchedule $flightScheduleArrival = null;
-
-    #[ORM\Column(length: 5, nullable: true)]
-    private ?string $positionTrack = null;
+    #[Groups(['track:read'])]
+    private Collection $flightScheduleArrival;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['track:read', 'track:write'])]
     private ?bool $hasTerminal = null;
 
-    #[ORM\Column(length: 60, nullable: true)]
-    private ?string $terminalName = null;
-
     #[ORM\Column(nullable: true)]
+    #[Groups(['track:read', 'track:write'])]
     private ?int $terminalNumber = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -68,6 +85,15 @@ class Track
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->flightScheduleDeparture = new ArrayCollection();
+        $this->flightScheduleArrival = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
 
     public function getId(): ?int
     {
@@ -86,14 +112,14 @@ class Track
         return $this;
     }
 
-    public function getName(): ?string
+    public function getTrackNameQfu(): ?string
     {
-        return $this->name;
+        return $this->trackNameQfu;
     }
 
-    public function setName(string $name): self
+    public function setTrackNameQfu(string $trackNameQfu): self
     {
-        $this->name = $name;
+        $this->trackNameQfu = $trackNameQfu;
 
         return $this;
     }
@@ -110,38 +136,62 @@ class Track
         return $this;
     }
 
-    public function getFlightScheduleDeparture(): ?FlightSchedule
+    /**
+     * @return Collection
+     */
+    public function getFlightScheduleDeparture(): Collection
     {
         return $this->flightScheduleDeparture;
     }
 
-    public function setFlightScheduleDeparture(?FlightSchedule $flightScheduleDeparture): self
+    public function addFlightScheduleDeparture(FlightSchedule $flightScheduleDeparture): self
     {
-        $this->flightScheduleDeparture = $flightScheduleDeparture;
+        if (!$this->flightScheduleDeparture->contains($flightScheduleDeparture)) {
+            $this->flightScheduleDeparture->add($flightScheduleDeparture);
+            $flightScheduleDeparture->setDepartureTrack($this);
+        }
 
         return $this;
     }
 
-    public function getFlightScheduleArrival(): ?FlightSchedule
+    public function removeFlightScheduleDeparture(FlightSchedule $flightScheduleDeparture): self
+    {
+        if ($this->flightScheduleDeparture->removeElement($flightScheduleDeparture)) {
+            // set the owning side to null (unless already changed)
+            if ($flightScheduleDeparture->getDepartureTrack() === $this) {
+                $flightScheduleDeparture->setDepartureTrack(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFlightScheduleArrival(): Collection
     {
         return $this->flightScheduleArrival;
     }
 
-    public function setFlightScheduleArrival(?FlightSchedule $flightScheduleArrival): self
+    public function addFlightScheduleArrival(FlightSchedule $flightScheduleArrival): self
     {
-        $this->flightScheduleArrival = $flightScheduleArrival;
+        if (!$this->flightScheduleArrival->contains($flightScheduleArrival)) {
+            $this->flightScheduleArrival->add($flightScheduleArrival);
+            $flightScheduleArrival->setArrivalTrack($this);
+        }
 
         return $this;
     }
 
-    public function getPositionTrack(): ?string
+    public function removeFlightScheduleArrival(FlightSchedule $flightScheduleArrival): self
     {
-        return $this->positionTrack;
-    }
-
-    public function setPositionTrack(?string $positionTrack): self
-    {
-        $this->positionTrack = $positionTrack;
+        if ($this->flightScheduleArrival->removeElement($flightScheduleArrival)) {
+            // set the owning side to null (unless already changed)
+            if ($flightScheduleArrival->getArrivalTrack() === $this) {
+                $flightScheduleArrival->setArrivalTrack(null);
+            }
+        }
 
         return $this;
     }
@@ -154,18 +204,6 @@ class Track
     public function setHasTerminal(?bool $hasTerminal): self
     {
         $this->hasTerminal = $hasTerminal;
-
-        return $this;
-    }
-
-    public function getTerminalName(): ?string
-    {
-        return $this->terminalName;
-    }
-
-    public function setTerminalName(?string $terminalName): self
-    {
-        $this->terminalName = $terminalName;
 
         return $this;
     }

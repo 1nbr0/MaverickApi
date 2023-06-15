@@ -14,15 +14,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(security: 'is_granted("ROLE_USER")'),
-        new GetCollection(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_ADMIN")'),
-        new Patch(security: 'is_granted("ROLE_ADMIN")'),
-        new Delete(security: 'is_granted("ROLE_ADMIN")'),
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new Post(security: 'is_granted("ROLE_USER")'),
+        new Patch(
+            denormalizationContext: ['groups' => ['airport:items:write']],
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user',
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))',
+//            securityPostDenormalize: 'object.getOwner() == user'
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['airport:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['airport:write']
     ],
     paginationItemsPerPage: 20,
 )]
@@ -31,21 +46,27 @@ class Airport
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['airport:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['airport:read', 'airport:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['airport:read', 'airport:write'])]
     private ?int $nbrTrack = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['airport:read', 'airport:write'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['airport:read', 'airport:write'])]
     private ?string $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'airport', targetEntity: Track::class)]
+    #[Groups(['airport:read'])]
     private Collection $numTrack;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -57,6 +78,8 @@ class Airport
     public function __construct()
     {
         $this->numTrack = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int
