@@ -58,7 +58,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [
         'groups' => ['flightSchedule:collection:read']
     ],
-    paginationItemsPerPage: 6,
+    paginationItemsPerPage: 3,
     security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))'
 )]
 class FlightSchedule

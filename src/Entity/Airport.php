@@ -57,19 +57,19 @@ class Airport
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?int $nbrTrack = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?string $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'airport', targetEntity: Track::class)]

@@ -72,11 +72,11 @@ class Warplane
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
@@ -90,7 +90,7 @@ class Warplane
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:item:get', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:item:get', 'flightSchedule:Plane', 'flightSchedule:collection:read', 'flightSchedule:item:read'])]
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     public ?string $contentUrl = null;
 

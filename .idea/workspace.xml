@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8867223-3f70-4756-a218-6ad8cb979310" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Airport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Airport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Track.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Track.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Warplane.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Warplane.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -326,7 +324,8 @@
       <workItem from="1686751524334" duration="100000" />
       <workItem from="1686752910479" duration="10980000" />
       <workItem from="1686809458245" duration="17013000" />
-      <workItem from="1686844151179" duration="5928000" />
+      <workItem from="1686844151179" duration="6581000" />
+      <workItem from="1686900401046" duration="2971000" />
     </task>
     <servers />
   </component>
