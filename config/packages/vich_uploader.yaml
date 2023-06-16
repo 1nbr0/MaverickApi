@@ -1,0 +1,9 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+    mappings:
+        warplane_image:
+            uri_prefix: /images
+            upload_destination: '%uploads_directory%'
+            namer: Vich\UploaderBundle\Naming\OrignameNamer

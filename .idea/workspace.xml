@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8867223-3f70-4756-a218-6ad8cb979310" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/76eacaf2-840e-4527-a301-5af5c5dc5dfc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/76eacaf2-840e-4527-a301-5af5c5dc5dfc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Airport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Airport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FlightSchedule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Track.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Track.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Warplane.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Warplane.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,13 +20,33 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="6b6636e3-3f5d-4119-aa17-ac9b390938d8" />
+        <option name="url" value="git@github.com:1nbr0/MaverickApi.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="maverickapi_php:latest">
+  <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/symfony/cache-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
@@ -42,9 +63,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
       <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/filesystem" />
-      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/symfony/console" />
-      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/stopwatch" />
       <path value="$PROJECT_DIR$/vendor/symfony/flex" />
       <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
@@ -104,6 +123,82 @@
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/webonyx/graphql-php" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/vendor/nesbot/carbon" />
+      <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/vendor/lexik/jwt-authentication-bundle" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/vendor/auth0/jwt-auth-bundle" />
+      <path value="$PROJECT_DIR$/vendor/auth0/auth0-php" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/event-dispatcher-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/container-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/cache-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/discovery" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/log-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/http-client-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/http-factory-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/php-http/discovery" />
+      <path value="$PROJECT_DIR$/vendor/php-http/multipart-stream-builder" />
+      <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
+      <path value="$PROJECT_DIR$/vendor/symfony/requirements-checker" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/vendor/zenstruck/callback" />
+      <path value="$PROJECT_DIR$/vendor/zenstruck/assert" />
+      <path value="$PROJECT_DIR$/vendor/zenstruck/foundry" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/code-unit" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-invoker" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/browser-kit" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
+      <path value="$PROJECT_DIR$/vendor/behat/mink" />
+      <path value="$PROJECT_DIR$/vendor/zenstruck/browser" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/vendor/vich/uploader-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/metadata" />
+      <path value="$PROJECT_DIR$/vendor/gesdinet/jwt-refresh-token-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/process" />
     </include_path>
   </component>
   <component name="ProjectId" id="2MV9kq8alG7ZiMcRWfX1SPJW2OJ" />
@@ -118,13 +213,14 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpCreateRemoteSdkForm&quot;: &quot;Docker&quot;,
     &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpInplaceEditRemoteSdkForm&quot;: &quot;Docker&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/robinturpin/Develop/workspace_web/MaverickApp/MaverickApi&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/robinturpin/Develop/workspace_web/MaverickApp/MaverickApi/assets/js&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;php.override.implement.member.chooser.php.doc&quot;: &quot;NONE&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -133,7 +229,25 @@
     ]
   }
 }</component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/js" />
+      <recent name="$PROJECT_DIR$/assets/fonts" />
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/assets" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/assets/styles" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/templates/home_page/templatemo_543_breezed" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Docker.docker-compose.override.yml.database: Compose Deployment">
+    <configuration name="phpunit.xml.dist" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner scope="XML" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -170,11 +284,56 @@
       <workItem from="1677842029906" duration="12925000" />
       <workItem from="1678833418554" duration="3059000" />
       <workItem from="1681226517886" duration="3358000" />
-      <workItem from="1681281019992" duration="2811000" />
+      <workItem from="1681281019992" duration="2850000" />
+      <workItem from="1681397160012" duration="642000" />
+      <workItem from="1681459010320" duration="3345000" />
+      <workItem from="1681931813251" duration="2520000" />
+      <workItem from="1682364363726" duration="3032000" />
+      <workItem from="1682423762287" duration="392000" />
+      <workItem from="1682508379783" duration="2745000" />
+      <workItem from="1682951930138" duration="22963000" />
+      <workItem from="1682983868857" duration="936000" />
+      <workItem from="1682984822322" duration="52000" />
+      <workItem from="1682984960865" duration="84000" />
+      <workItem from="1682986262026" duration="78000" />
+      <workItem from="1683017397170" duration="1726000" />
+      <workItem from="1683035782572" duration="2124000" />
+      <workItem from="1683066457491" duration="3004000" />
+      <workItem from="1683105627598" duration="1073000" />
+      <workItem from="1683144220320" duration="1838000" />
+      <workItem from="1683182928887" duration="1206000" />
+      <workItem from="1683220146825" duration="7521000" />
+      <workItem from="1683271407013" duration="17078000" />
+      <workItem from="1683364902597" duration="10657000" />
+      <workItem from="1683461586586" duration="18055000" />
+      <workItem from="1683500439566" duration="826000" />
+      <workItem from="1683537517913" duration="8685000" />
+      <workItem from="1684413032307" duration="11331000" />
+      <workItem from="1684750202843" duration="4888000" />
+      <workItem from="1684832226502" duration="1171000" />
+      <workItem from="1684833422726" duration="170000" />
+      <workItem from="1684833697296" duration="21951000" />
+      <workItem from="1684912953188" duration="1251000" />
+      <workItem from="1685016452548" duration="940000" />
+      <workItem from="1685102710560" duration="3473000" />
+      <workItem from="1685135057159" duration="6459000" />
+      <workItem from="1685182356002" duration="9278000" />
+      <workItem from="1686575158153" duration="2454000" />
+      <workItem from="1686661632318" duration="4899000" />
+      <workItem from="1686730214909" duration="1584000" />
+      <workItem from="1686751524334" duration="100000" />
+      <workItem from="1686752910479" duration="10980000" />
+      <workItem from="1686809458245" duration="17013000" />
+      <workItem from="1686844151179" duration="6581000" />
+      <workItem from="1686900401046" duration="2971000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
