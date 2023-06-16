@@ -39,48 +39,63 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
     ],
     normalizationContext: [
-        'groups' => ['flightSchedule:read']
+        'groups' => ['flightSchedule:read', 'flightSchedule:Track', 'flightSchedule:Plane']
     ],
     denormalizationContext: [
         'groups' => ['flightSchedule:write']
     ],
-    paginationItemsPerPage: 20,
+    paginationItemsPerPage: 6,
+)]
+#[ApiResource(
+    uriTemplate: '/flight_schedule/users/{user_id}.{_format}',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'flightSchedules',
+            fromClass: User::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => ['flightSchedule:collection:read']
+    ],
+    paginationItemsPerPage: 6,
+    security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))'
 )]
 class FlightSchedule
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['flightSchedule:read'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?string $idFlight = null;
 
     #[ORM\ManyToOne(inversedBy: 'flightSchedules')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
     private ?Warplane $assignedPlane = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?\DateTimeInterface $departureTime = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?\DateTimeInterface $arrivalTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'flightScheduleDeparture')]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?Track $departureTrack = null;
 
     #[ORM\ManyToOne(inversedBy: 'flightScheduleArrival')]
-    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write'])]
+    #[Groups(['flightSchedule:read', 'flightSchedule:write', 'flightSchedule:item:read', 'flightSchedule:item:get', 'flightSchedule:items:write', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read'])]
     private ?Track $arrivalTrack = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -88,6 +103,11 @@ class FlightSchedule
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'flightSchedules')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['flightSchedule:read', 'flightSchedule:collection:read', 'flightSchedule:write', 'flightSchedule:items:write', 'flightSchedule:Plane'])]
+    private ?User $ownerOfFlightSchedules = null;
 
     public function __construct()
     {
@@ -212,6 +232,18 @@ class FlightSchedule
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getOwnerOfFlightSchedules(): ?User
+    {
+        return $this->ownerOfFlightSchedules;
+    }
+
+    public function setOwnerOfFlightSchedules(?User $ownerOfFlightSchedules): static
+    {
+        $this->ownerOfFlightSchedules = $ownerOfFlightSchedules;
 
         return $this;
     }

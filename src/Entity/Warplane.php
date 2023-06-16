@@ -46,7 +46,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     denormalizationContext: [
         'groups' => ['warplane:write']
     ],
-    paginationItemsPerPage: 3
+    paginationItemsPerPage: 6
 )]
 #[ApiResource(
     uriTemplate: '/users/{user_id}/warplanes.{_format}',
@@ -61,7 +61,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'groups' => ['warplane:collection:read']
     ],
     paginationItemsPerPage: 6,
-    security: 'is_granted("ROLE_USER")'
+    security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))'
 )]
 class Warplane
 {
@@ -72,11 +72,11 @@ class Warplane
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'user:read', 'warplane:item:read', 'warplane:item:get', 'warplane:items:write', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
     private ?string $armament = null;
 
     #[ORM\OneToMany(mappedBy: 'assignedPlane', targetEntity: FlightSchedule::class)]
@@ -90,7 +90,7 @@ class Warplane
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:item:get'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:item:get', 'flightSchedule:Plane', 'flightSchedule:collection:read'])]
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     public ?string $contentUrl = null;
 
@@ -103,7 +103,7 @@ class Warplane
 
     #[ORM\ManyToOne(inversedBy: 'warplanes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'warplane:items:write'])]
+    #[Groups(['warplane:read', 'warplane:collection:read', 'warplane:write', 'warplane:items:write', 'flightSchedule:Plane'])]
     private ?User $owner = null;
 
     public function __construct()

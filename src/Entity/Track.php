@@ -46,20 +46,20 @@ class Track
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['track:read'])]
+    #[Groups(['track:read', 'airport:collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['track:read', 'track:write'])]
+    #[Groups(['track:read', 'track:write', 'airport:Track', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read', 'airport:collection:read'])]
     private ?int $idTrackNumber = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['track:read', 'track:write'])]
+    #[Groups(['track:read', 'track:write', 'airport:Track', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read', 'airport:collection:read'])]
     private ?string $trackNameQfu = null;
 
     #[ORM\ManyToOne(inversedBy: 'numTrack')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['track:read', 'track:write'])]
+    #[Groups(['track:read', 'track:write', 'flightSchedule:collection:read'])]
     private ?Airport $airport = null;
 
     #[ORM\OneToMany(mappedBy: 'departureTrack', targetEntity: FlightSchedule::class)]
@@ -73,11 +73,11 @@ class Track
     private Collection $flightScheduleArrival;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['track:read', 'track:write'])]
+    #[Groups(['track:read', 'track:write', 'airport:Track', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read', 'airport:collection:read'])]
     private ?bool $hasTerminal = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['track:read', 'track:write'])]
+    #[Groups(['track:read', 'track:write', 'airport:Track', 'flightSchedule:Track', 'warplane:collection:read', 'flightSchedule:collection:read', 'airport:collection:read'])]
     private ?int $terminalNumber = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

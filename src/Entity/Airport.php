@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -22,6 +23,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(
             security: 'is_granted("ROLE_USER")'
         ),
+        new Get(
+            normalizationContext: [
+                'groups' => ['airport:collection:read']
+            ],
+            security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER"))'
+        ),
         new Post(security: 'is_granted("ROLE_USER")'),
         new Patch(
             denormalizationContext: ['groups' => ['airport:items:write']],
@@ -34,7 +41,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
     ],
     normalizationContext: [
-        'groups' => ['airport:read']
+        'groups' => ['airport:read', 'airport:Track']
     ],
     denormalizationContext: [
         'groups' => ['airport:write']
@@ -50,23 +57,23 @@ class Airport
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['airport:read', 'airport:write'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['airport:read', 'airport:write'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
     private ?int $nbrTrack = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['airport:read', 'airport:write'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['airport:read', 'airport:write'])]
+    #[Groups(['airport:read', 'airport:write', 'flightSchedule:collection:read'])]
     private ?string $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'airport', targetEntity: Track::class)]
-    #[Groups(['airport:read'])]
+    #[Groups(['airport:read', 'airport:Track', 'airport:collection:read'])]
     private Collection $numTrack;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

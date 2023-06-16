@@ -61,10 +61,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['flightSchedule:Plane'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'flightSchedule:Plane'])]
     #[Assert\NotBlank]
     #[Assert\Email]
     private ?string $email = null;
@@ -81,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['user:read', 'user:write', 'warplane:item:get'])]
+    #[Groups(['user:read', 'user:write', 'warplane:item:get', 'flightSchedule:Plane'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 
@@ -89,9 +90,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $warplanes;
 
+    #[ORM\OneToMany(mappedBy: 'ownerOfFlightSchedules', targetEntity: FlightSchedule::class)]
+    private Collection $flightSchedules;
+
     public function __construct()
     {
         $this->warplanes = new ArrayCollection();
+        $this->flightSchedules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,6 +205,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($warplane->getOwner() === $this) {
                 $warplane->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FlightSchedule>
+     */
+    public function getFlightSchedules(): Collection
+    {
+        return $this->flightSchedules;
+    }
+
+    public function addFlightSchedule(FlightSchedule $flightSchedule): static
+    {
+        if (!$this->flightSchedules->contains($flightSchedule)) {
+            $this->flightSchedules->add($flightSchedule);
+            $flightSchedule->setOwnerOfFlightSchedules($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFlightSchedule(FlightSchedule $flightSchedule): static
+    {
+        if ($this->flightSchedules->removeElement($flightSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($flightSchedule->getOwnerOfFlightSchedules() === $this) {
+                $flightSchedule->setOwnerOfFlightSchedules(null);
             }
         }
 
